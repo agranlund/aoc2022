@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"cookie.h": "c",
+			"MAIN.C": "cpp",
+			"MMU.C": "cpp"
+		}
+	}
+}
