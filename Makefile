@@ -1,21 +1,15 @@
 #Makefile
 VASM=vasmm68k_mot
 CPU=-m68020
-PLATFORM=atari
 
-ifeq ($(PLATFORM),atari)
-FLAGS=$(CPU) -DATARI -Ftos -tos-flags=0 -monst
-EXT=.tos
-else
-FLAGS=$(CPU) -DAMIGA -Fhunkexe -nosym
-EXT=
-endif
-
-all: $(TARGETS)
+VASM_ATARI=$(VASM) $(CPU) -DATARI -Ftos -tos-flags=0 -monst $< -o $@.tos
+VASM_AMIGA=$(VASM) $(CPU) -DAMIGA -Fhunkexe -nosym $< -o $@.exe
 
 clean:
-	rm -f *.o *.$(EXT)
+	rm -f *.o *.tos *.exe
 
 day01: day01.s
-	$(VASM) $(FLAGS) $< -o $@$(EXT)
+	$(VASM_ATARI)
 
+day02: day02.s
+	$(VASM_AMIGA)
