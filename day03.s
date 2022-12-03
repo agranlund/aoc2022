@@ -1,5 +1,5 @@
 
-DEF PUZZLE = 1
+DEF PUZZLE = 2
 
 SECTION	"hdr",ROM0[$0100]
     nop     ; cartridge header
@@ -93,6 +93,54 @@ ELSE
     ; Part 2
     ; -------------------------------------------------
 
+    ; clear presents flags
+.0: push    hl
+    ld      hl,$C041
+    ld      c,64
+    ld      a,0
+.1: ld      [hl+],a
+    dec     c
+    jr      nz,.1
+    pop     hl
+    ; look through three rucksacks
+    ld      d,$C0           ; de = present flags
+    ld      b,1             ;  b = rucksack flag
+.2: ld      a,[hl+]         ; grab present
+    cp      $0a             ; end of rucksack?
+    jr      z,.3
+    ld      e,a             ; de = &flags[present]
+    ld      a,[de]
+    or      b               ; flags[present] |= b
+    ld      [de],a
+    jr      .2
+.3: sla     b               ; b <<= 1
+    ld      a,b
+    and     %00001000       ; three rucksacks done?
+    jr      z,.2
+    ; find that unique present
+    push    hl
+    ld      hl,$C041
+    ld      c,64
+.4: ld      a,[hl+]
+    cp      %00000111
+    jr      z,.5
+    dec     c
+    jr      nz,.4
+.5: ld      d,$02
+    ld      e,l             ; de = scores
+    dec     e
+    ld      a,[de]
+    pop     de              ; de = input ptr
+    pop     hl              ; hl = total score
+    ld      c,a
+    ld      b,0
+    add     hl,bc           ; add current
+    push    hl              ; push score back on stack
+    ld      h,d             ; hl = input ptr
+    ld      l,e
+    ld      a,[hl]          ; do we have any more rucksacks?
+    cp      0
+    jr      nz,.0           ; yes, loop
 ENDC
 
 
