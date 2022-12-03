@@ -31,10 +31,10 @@ Puzzle = 2
 .2: rol.l       #4,d4
     move.b      d4,d1
     and.l       #$0000000f,d1
-    add.l       #sHex,d1
+    add.l       #sHex,d1        ; doslib->WriteChar
     moveq.l     #1,d2
     jsr         -942(a6)
-    dbra        d3,.2
+    dbra        d3,.2           ; loop
     ; done
     movea.l     a6,a1           ; exec->CloseLibrary(doslib)
     movea.l     4,a6

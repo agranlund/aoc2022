@@ -16,15 +16,15 @@
     trap    #14
     move.w  #0,-(sp)        ; exit(0)
     trap    #1
-shex:
+sHex:
 	dc.w	'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'
-sfilename:
+sFilename:
 	dc.b	"DAY01.TXT",0
 	even
 main:
 	; load file
     move.w  #0,-(sp)		; fopen
-	pea		sfilename
+	pea		sFilename
     move.w  #61,-(sp)
     trap    #1
     move.w  d0,d3       	; d3 = file handle
@@ -93,12 +93,15 @@ main:
 	einline
 	endr
 	; print result
-    move.l  #shex,a0
+    move.l  #sHex,a4
     move.w  #7,d3
 .5: rol.l   #4,d1
     move.w  d1,d2
-    and.w   #$f,d2
-    move.w  0(a0,d2.w*2),-(sp)
+    and.l   #$f,d2
+    add.w   d2,d2
+    add.l   a4,d2
+    move.l  d2,a0
+    move.w  (a0),-(sp)
     move.w  #2,-(sp)
     trap    #1
     dbra    d3,.5
