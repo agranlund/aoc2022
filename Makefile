@@ -3,6 +3,7 @@ VASM  = vasmm68k_mot
 GBASM = rgbasm
 GBLNK = rgblink
 GBFIX = rgbfix
+TASS  = 64tass
 CC    = gcc
 
 all: day01 day02 day03
@@ -18,9 +19,13 @@ day01: day01.s
 day02: day02.s
 	$(VASM) -m68000 -Fhunkexe -nosym $< -o $@.exe
 
-# Day 3: ? (Nintendo Gameboy, Z80-ish)
+# Day 3: Rucksack reorganization (Nintendo Gameboy, Z80-ish)
 day03: day03.s
 	$(GBASM) -o $@.o $<
 	$(GBLNK) -o $@.gb day03.o
 	$(GBFIX) -v -p 0 $@.gb
+
+# Day 4: Camp Cleanup (Commodore 64, 6502)
+day04: day04.s
+	$(TASS) -a -i $< -o $@.prg
 
