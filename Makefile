@@ -6,10 +6,10 @@ GBFIX = rgbfix
 TASS  = 64tass
 CC    = gcc
 
-all: day01 day02 day03
+all: day01 day02 day03 day04
 
 clean:
-	rm -f *.o *.tos *.exe *.gb
+	rm -f *.o *.tos *.exe *.gb *.prg
 
 # Day 1: Calorie counting (Atari ST, M68000)
 day01: day01.s
