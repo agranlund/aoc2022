@@ -62,13 +62,11 @@ loop:                   ; loop all lines
     inc InputPtr+1      ; increment high byte
 
 compare:
-    clc
     lda Values+0        ; start1
     cmp Values+2        ; start2
     beq found
     bcc l1
     ; start1 > start2
-    clc
 .if puzzle == 1
     lda Values+1
     cmp Values+3
@@ -80,7 +78,6 @@ compare:
     beq found
     jmp loop
 l1: ; start1 < start2
-    clc
 .if puzzle == 1
     lda Values+3
     cmp Values+1
