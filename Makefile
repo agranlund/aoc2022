@@ -11,7 +11,7 @@ all: day01 day02 day03 day04
 clean:
 	rm -f *.o *.tos *.exe *.gb *.prg
 
-# Day 1: Calorie counting (Atari ST, M68000)
+# Day 1: Calorie counting (Atari, M68000)
 day01: day01.s
 	$(VASM) -m68000 -Ftos -tos-flags=0 -monst $< -o $@.tos
 
@@ -28,4 +28,8 @@ day03: day03.s
 # Day 4: Camp Cleanup (Commodore 64, 6502)
 day04: day04.s
 	$(TASS) -a -i $< -o $@.prg
+
+# Day 5: Supply Stacks (Atari, 68020+)
+day05: day05.s
+	$(VASM) -m68020 -Ftos -tos-flags=0 -monst $< -o $@.tos
 
