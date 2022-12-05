@@ -31,5 +31,5 @@ day04: day04.s
 
 # Day 5: Supply Stacks (Atari, 68020+)
 day05: day05.s
-	$(VASM) -m68020 -Ftos -tos-flags=0 -monst $< -o $@.tos
+	$(VASM) -m68020 -Ftos -tos-flags=0 -nosym $< -o $@.tos
 

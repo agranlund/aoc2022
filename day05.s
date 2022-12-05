@@ -1,11 +1,13 @@
 Puzzle = 2
+MaxStackCount = 10
+MaxStackSize  = 64
 
         bss
-        ds 16*4*64
-stacks: ds 4*16
+        ds MaxStackSize*MaxStackCount
+stacks: ds 4*MaxStackCount
     text
-    rept 16
-    move.l  #stacks-(REPTN*4*64),stacks+(4*REPTN)
+    rept MaxStackCount
+    move.l  #stacks-(REPTN*MaxStackSize),stacks+(4*REPTN)
     endr
     move.l  #stacks,a5          ; a5 = stack pointer list
     move.l  #input,a4           ; a4 = input data
@@ -30,7 +32,7 @@ stacks: ds 4*16
 .3: move.b  1(a0,d3*4),d0       ; get boxid
     cmp.b   #' ',d0             ; empty?
     beq.s   .4
-    subq.l  #4,0(a5,d3.w*4)     ; add box
+    subq.l  #1,0(a5,d3.w*4)     ; add box
     move.b  d0,([a5,d3.w*4])
 .4: addq.l  #1,d3
     cmp.l   d3,d6
@@ -60,26 +62,22 @@ moveboxes:
     if Puzzle=1    
         bra.s   .3
 .2:     move.b  ([a5,d3.w*4]),d0    ; pop box from src
-        addq.l  #4,0(a5,d3.w*4)
-        subq.l  #4,0(a5,d4.w*4)     ; push box onto dst
+        addq.l  #1,0(a5,d3.w*4)
+        subq.l  #1,0(a5,d4.w*4)     ; push box onto dst
         move.b  d0,([a5,d4.w*4])
 .3:     dbra.w  d2,.2
     else
         move.l  d2,d5
-        move.l  d5,d1               ; d1 = offset
-        subq.l  #1,d1
-        lsl.l   #2,d1
-        add.l   d1,0(a5,d3.w*4)
+        subq.l  #1,d5
+        add.l   d5,0(a5,d3.w*4)
         bra.s   .3
 .2      move.b  ([a5,d3.w*4]),d0    ; pop box from src
-        subq.l  #4,0(a5,d3.w*4)
-        subq.l  #4,0(a5,d4.w*4)     ; push box onto dst
+        subq.l  #1,0(a5,d3.w*4)
+        subq.l  #1,0(a5,d4.w*4)     ; push box onto dst
         move.b  d0,([a5,d4.w*4])
 .3:     dbra.w  d2,.2
-        move.l  d5,d1
-        addq.l  #1,d1
-        lsl.l   #2,d1
-        add.l   d1,0(a5,d3.w*4)
+        addq.l  #2,d5
+        add.l   d5,0(a5,d3.w*4)
     endif
     bra.s   .0                  ; do next order
 
@@ -99,4 +97,4 @@ done:
 
 input:
     incbin "day05.txt"
-    db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    db 0
