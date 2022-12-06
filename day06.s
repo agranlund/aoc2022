@@ -1,29 +1,27 @@
-%assign len 14
+%assign len 4
 
-%macro pkt 2
-    mov dl,[si+%1]
-    cmp dl,[si+%2]
-    jz  .1
-%endmacro
-
-org 0x100
+    org 0x100
     mov si,input
-.0:
+find:               ; find packet
 %assign i 0
 %rep len-1
 %assign j i+1
+    mov dl,[si+i]
 %rep len-1-i
-    pkt i,j
+    cmp dl,[si+j]
+    jz  .1
 %assign j j+1
 %endrep
 %assign i i+1
 %endrep
-    jmp .2
+    jmp show
 .1: add si,1
-    jmp .0
-.2: mov dx,si       ; show the result
-    add dx,len
-    sub dx,input
+    jmp find
+
+show:               ; show result
+    mov dx,si       ; current offset
+    add dx,len      ; + packet length
+    sub dx,input    ; - buffer start
     mov cl,12
 .3: push dx
     shr dx,cl       ; shift into place
@@ -40,3 +38,4 @@ org 0x100
     mov ah,0x4c     ; exit
     int 0x21
 input incbin 'day06.txt'
+
