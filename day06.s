@@ -1,4 +1,4 @@
-%assign len 4
+%assign len 14
 
     org 0x100
     mov si,input
