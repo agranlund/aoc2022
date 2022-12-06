@@ -4,6 +4,7 @@ GBASM = rgbasm
 GBLNK = rgblink
 GBFIX = rgbfix
 TASS  = 64tass
+NASM  = nasm
 CC    = gcc
 
 all: day01 day02 day03 day04
@@ -33,3 +34,6 @@ day04: day04.s
 day05: day05.s
 	$(VASM) -m68020 -Ftos -tos-flags=0 -nosym $< -o $@.tos
 
+# Day 6 : Tuning Trouble (8086)
+day06: day06.s
+	$(NASM) -f bin $< -o $@.com
