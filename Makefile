@@ -7,7 +7,7 @@ TASS  = 64tass
 NASM  = nasm
 CC    = gcc
 
-all: day01 day02 day03 day04 day05 day06 day07
+all: day01 day02 day03 day04 day05 day06 day07 day08
 
 clean:
 	rm -f *.o *.tos *.exe *.gb *.prg *.com
@@ -42,3 +42,6 @@ day06: day06.s
 day07: day07.s
 	$(VASM) -m68000 -Ftos -tos-flags=0 -nosym $< -o $@.tos
 
+#day08: Treetop Tree House  (Atari, 68000)
+day08: day08.s
+	$(VASM) -m68000 -Ftos -tos-flags=0 -nosym $< -o $@.tos
