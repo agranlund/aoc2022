@@ -22,12 +22,11 @@ _main:
     move.l  #disp,a5        | a5 = display
 .0: move.b  #'.',(a5)+      | d0 = output
     move.b  (a4)+,d1        | d1 = sprite pos
-    sub.b   d3,d1           | x = sprx?
-    beq.s   .1
-    sub.b   #1,d1           | x = sprx+1?
-    beq.s   .1
-    add.b   #2,d1           | x == sprx-1?
-    bne.s   .2
+    sub.b   d3,d1           | 
+    sub.b   #1,d1           | x > (sprx+1) ?
+    bgt.s   .2
+    add.b   #2,d1           | x < (sprx-1) ?
+    blt.s   .2
 .1: move.b  #'#',-1(a5)     | this is a pixel
 .2: addq.w  #1,d3           | step x
     cmp.w   #40,d3          | at end?
@@ -35,12 +34,12 @@ _main:
     move.l  #disp,a5        | draw line
     move.l  a5,-(sp)
     move.w  #9,-(sp)
-    trap    #1
+    trap    #1              | Cconws(disp)
     addq.l  #6,sp
     clr.l   d3              | next line
     dbra    d4,.0
-    move.w  #0,-(sp)        | Exit(0)
-    trap    #1
+    move.w  #0,-(sp)
+    trap    #1              | Exit(0)
 
 disp:
 .fill 40,1,0        | scanline
