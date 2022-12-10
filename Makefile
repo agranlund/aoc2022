@@ -1,5 +1,6 @@
 #Makefile
 VASM  = vasmm68k_mot
+STGCC = m68k-atari-mint-gcc
 GBASM = rgbasm
 GBLNK = rgblink
 GBFIX = rgbfix
@@ -7,7 +8,7 @@ TASS  = 64tass
 NASM  = nasm
 CC    = gcc
 
-all: day01 day02 day03 day04 day05 day06 day07 day08 day09
+all: day01 day02 day03 day04 day05 day06 day07 day08 day09 day10
 
 clean:
 	rm -f *.o *.tos *.exe *.gb *.prg *.com
@@ -49,3 +50,7 @@ day08: day08.s
 #day09: Rope Bridge (Atari, 68020)
 day09: day09.s
 	$(VASM) -m68020 -Ftos -tos-flags=0 -nosym $< -o $@.tos
+
+#day10: Cathode-Ray Tube (Atari, 68000)
+day10: day10.S
+	$(STGCC) $< -m68000 -o $@.tos
